@@ -1,0 +1,56 @@
+From 635cf0cb69db7283ff6452ec5c1e5cda204db112 Mon Sep 17 00:00:00 2001
+From: Nick Alilovic <nickalilovic@gmail.com>
+Date: Tue, 20 Feb 2024 20:36:50 -0500
+Subject: [PATCH 2/2] arm64: dts: allwinner: h618: Transpeed 8k618 T: Enable Ethernet
+
+Enable Ethernet
+
+Signed-off-by: Nick Alilovic <nickalilovic@gmail.com>
+---
+ .../sun50i-h618-transpeed-8k618-t.dts         | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts b/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts
+index f80814414038..42d8ae6aeaa1 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts
+@@ -16,6 +16,7 @@ / {
+ 	compatible = "transpeed,8k618-t", "allwinner,sun50i-h618";
+ 
+ 	aliases {
++		ethernet0 = &emac1;
+ 		ethernet1 = &sdio_wifi;
+ 		serial0 = &uart0;
+ 	};
+@@ -99,6 +100,28 @@ &ir {
+ 	status = "okay";
+ };
+ 
++&i2c3 {
++	status = "okay";
++};
++
++&emac1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&rmii_pins>;
++	phy-mode = "rmii";
++	phy-handle = <&rmii_phy>;
++	phy-supply = <&reg_aldo1>;
++	allwinner,rx-delay-ps = <3100>;
++	allwinner,tx-delay-ps = <700>;
++	status = "okay";
++};
++
++&mdio1 {
++	rmii_phy: ethernet-phy@0 {
++		compatible = "ethernet-phy-ieee802.3-c22";
++		reg = <0>;
++	};
++};
++
+ &mmc0 {
+ 	vmmc-supply = <&reg_dldo1>;
+ 	cd-gpios = <&pio 8 16 GPIO_ACTIVE_LOW>;	/* PI16 */
+-- 
+2.34.1
+
