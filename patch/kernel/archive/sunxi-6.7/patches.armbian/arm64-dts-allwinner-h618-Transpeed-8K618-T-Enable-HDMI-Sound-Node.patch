@@ -1,0 +1,42 @@
+From 6df5ff5df7da7fa8dc09cb3964d62073a20fbbd0 Mon Sep 17 00:00:00 2001
+From: Nick Alilovic <nickalilovic@gmail.com>
+Date: Mon, 11 Mar 2024 11:02:43 -0400
+Subject: [PATCH] arm64: dts: allwinner: h618: Transpeed 8K618-T: Enable HDMI Sound Node
+
+Enable HDMI sound node for Transpeed 8k618-t
+
+Signed-off-by: Nick Alilovic <nickalilovic@gmail.com>
+---
+ .../allwinner/sun50i-h618-transpeed-8k618-t.dts  | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts b/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts
+index 42d8ae6aeaa1..4a2a92e7892a 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts
+@@ -91,6 +91,22 @@ hdmi_out_con: endpoint {
+ 	};
+ };
+ 
++&ahub_dam_plat {
++	status = "okay";
++};
++
++&ahub_dam_mach {
++	status = "okay";
++};
++
++&ahub1_plat {
++	status = "okay";
++};
++
++&ahub1_mach {
++	status = "okay";
++};
++
+ &gpu {
+         mali-supply = <&reg_dcdc1>;
+         status = "okay";
+-- 
+2.34.1
+
