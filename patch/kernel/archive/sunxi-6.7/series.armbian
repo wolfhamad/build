@@ -45,7 +45,7 @@
 	patches.armbian/sound-soc-sunxi-sun4i-codec-adcis-select-capture-source.patch
 	patches.armbian/drv-mmc-host-sunxi-mmc-add-h5-emmc-compatible.patch
 	patches.armbian/drv-pinctrl-sunxi-pinctrl-sun50i-h6.c-GPIO-disable_strict_mode.patch
-	patches.armbian/drv-gpu-drm-sun4i-sun8i_mixer.c-add-h3-mixer1.patch
+-	patches.armbian/drv-gpu-drm-sun4i-sun8i_mixer.c-add-h3-mixer1.patch
 	patches.armbian/drv-mtd-nand-raw-nand_ids.c-add-H27UBG8T2BTR-BC-nand.patch
 	patches.armbian/drv-mfd-axp20x-add-sysfs-interface.patch
 	patches.armbian/drv-spi-spidev-Add-armbian-spi-dev-compatible.patch
@@ -176,7 +176,7 @@
 	patches.armbian/arm-dts-sun8i-h3-nanopi-duo2-enable-powerbutton-and-ethernet.patch
 	patches.armbian/arm-dts-sun8i-h3-reduce-opp-microvolt-to-prevent-not.patch
 	patches.armbian/arm64-dts-sun50i-h5-enable-power-button-for-orangepi-prime.patch
-	patches.armbian/arm-dts-sunxi-h3-h5-add_tve.patch
+-	patches.armbian/arm-dts-sunxi-h3-h5-add_tve.patch
 	patches.armbian/drivers-devfreq-sun8i-a33-mbus-disable-autorefresh.patch
 	patches.armbian/clk-gate-add-support-for-regmap-based-gates.patch
 	patches.armbian/mfd-Add-support-for-X-Powers-AC200.patch
@@ -193,7 +193,7 @@
 	patches.armbian/arm64-dts-add-wifi-nodes-for-Inovato-Quadra.patch
 	patches.armbian/arm64-dts-h616-add-wifi-support-for-orange-pi-zero-2.patch
 	patches.armbian/arm64-dts-sun50i-h618-orangepi-zero3-Enable-GPU-mali.patch
-	patches.armbian/drivers-hack-for-h616-hdmi-video-output.patch
+-	patches.armbian/drivers-hack-for-h616-hdmi-video-output.patch
 	patches.armbian/arm64-dts-h616-add-hdmi-support-for-zero2-and-zero3.patch
 	patches.armbian/arm64-dts-sun50i-h616-Add-dma-node.patch
 	patches.armbian/arm64-dts-H616-Add-overlays-that-are-also-compatible-with.patch
