@@ -222,7 +222,7 @@
 	patches.armbian/0545-drm-bridge-dw-hdmi-add-mtmdsclock-parameter-to-phy-c.patch
 	patches.armbian/0546-drm-bridge-dw-hdmi-support-configuring-phy-for-deep-.patch
 	patches.armbian/0547-WIP-drm-sun4i-de3-Add-support-for-YUV420-output.patch
-	patches.armbian/0548-media-cedrus-h265-Fix-configuring-bitstream-size.patch
+-	patches.armbian/0548-media-cedrus-h265-Fix-configuring-bitstream-size.patch
 	patches.armbian/0549-media-Add-NV12-and-P010-AFBC-compressed-formats.patch
 	patches.armbian/0550-media-cedrus-add-format-filtering-based-on-depth-and.patch
 	patches.armbian/0551-media-cedrus-Implement-AFBC-YUV420-formats-for-H265.patch
@@ -231,7 +231,7 @@
 	patches.armbian/0554-media-cedrus-Increase-H6-clock-rate.patch
 	patches.armbian/0555-clk-sunxi-ng-h6-Reparent-CPUX-during-PLL-CPUX-rate-c.patch
 	patches.armbian/0556-HACK-clk-sunxi-ng-unify-parent-for-HDMI-clocks.patch
-	patches.armbian/0557-wip-media-sunxi-sun8i-di-fix-race-condition.patch
+-	patches.armbian/0557-wip-media-sunxi-sun8i-di-fix-race-condition.patch
 	patches.armbian/0569-drm-dw-hdmi-cec-sleep-100ms-on-error.patch
 	patches.armbian/0575-H6-add-sun50i-di-deinterlace-WiP.patch
 	patches.armbian/0579-drm-bridge-dw-hdmi-fix-4k60-modes-on-some-tv.patch
