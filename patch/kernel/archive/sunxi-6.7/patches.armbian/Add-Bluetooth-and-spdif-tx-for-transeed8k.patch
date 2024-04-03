@@ -1,0 +1,146 @@
+From c1beb2f8a4615f11fd95e7a499ea0b00de38a3e2 Mon Sep 17 00:00:00 2001
+From: root <root@dino2.dhome>
+Date: Mon, 1 Apr 2024 19:35:02 +0200
+Subject: [PATCH 1266/1267] This patch adds Bluetooth and spdif tx for the
+ transpeed 8k618 tv box
+
+Signed-off-by: root <root@dino2.dhome>
+---
+ .../arm64/boot/dts/allwinner/overlay/Makefile |  1 +
+ .../overlay/sun50i-h616-spdif-out.dtso        | 38 +++++++++++++++++++
+ .../arm64/boot/dts/allwinner/sun50i-h616.dtsi | 21 ++++++++++
+ .../sun50i-h618-transpeed-8k618-t.dts         | 15 ++++++--
+ 4 files changed, 71 insertions(+), 4 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/allwinner/overlay/sun50i-h616-spdif-out.dtso
+
+diff --git a/arch/arm64/boot/dts/allwinner/overlay/Makefile b/arch/arm64/boot/dts/allwinner/overlay/Makefile
+index 3121036f25fa..2f69d4909bbd 100644
+--- a/arch/arm64/boot/dts/allwinner/overlay/Makefile
++++ b/arch/arm64/boot/dts/allwinner/overlay/Makefile
+@@ -53,6 +53,7 @@ dtb-$(CONFIG_ARCH_SUNXI) += \
+ 	sun50i-h616-i2c4.dtbo \
+ 	sun50i-h616-uart2.dtbo \
+ 	sun50i-h616-uart5.dtbo \
++	sun50i-h616-spdif-out.dtbo \
+ 	sun50i-h616-spi-spidev.dtbo \
+ 	sun50i-h616-spidev0_0.dtbo \
+ 	sun50i-h616-spidev1_0.dtbo \
+diff --git a/arch/arm64/boot/dts/allwinner/overlay/sun50i-h616-spdif-out.dtso b/arch/arm64/boot/dts/allwinner/overlay/sun50i-h616-spdif-out.dtso
+new file mode 100644
+index 000000000000..ce17be300078
+--- /dev/null
++++ b/arch/arm64/boot/dts/allwinner/overlay/sun50i-h616-spdif-out.dtso
+@@ -0,0 +1,38 @@
++/dts-v1/;
++/plugin/;
++
++/ {
++	compatible = "allwinner,sun50i-h616";
++
++	fragment@0 {
++		target = <&spdif>;
++		__overlay__ {
++			pinctrl-names = "default";
++			pinctrl-0 = <&spdif_tx_pin>;
++			status = "okay";
++		};
++	};
++
++	fragment@1 {
++		target-path = "/";
++		__overlay__ {
++			sound {
++				compatible = "simple-audio-card";
++				simple-audio-card,name = "On-board SPDIF";
++
++				simple-audio-card,cpu {
++					sound-dai = <&spdif>;
++				};
++
++				simple-audio-card,codec {
++					sound-dai = <&spdif_out>;
++				};
++			};
++
++			spdif_out: spdif-out {
++				#sound-dai-cells = <0>;
++				compatible = "linux,spdif-dit";
++			};
++		};
++	};
++};
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
+index 6d9607104651..d7a4b5a90156 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
+@@ -323,6 +323,12 @@ i2c2_ph_pins: i2c2-ph-pins {
+ 				function = "i2c2";
+ 			};
+ 
++			spdif_tx_pin: spdif-tx-pin {
++				pins = "PH4";
++				function = "spdif";
++			};
++
++			/omit-if-no-ref/
+ 			i2c3_ph_pins: i2c3-ph-pins {
+ 				pins = "PH4", "PH5";
+ 				function = "i2c3";
+@@ -834,6 +840,21 @@ mdio1: mdio {
+ 			};
+ 		};
+ 
++		spdif: spdif@5093000 {
++			compatible = "allwinner,sun50i-h616-spdif";
++			reg = <0x05093000 0x400>;
++			interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&ccu CLK_BUS_SPDIF>, <&ccu CLK_SPDIF>;
++			clock-names = "apb", "spdif";
++			resets = <&ccu RST_BUS_SPDIF>;
++			dmas = <&dma 2>;
++			dma-names = "tx";
++			pinctrl-names = "default";
++			pinctrl-0 = <&spdif_tx_pin>;
++			#sound-dai-cells = <0>;
++			status = "disabled";
++		};
++
+ 		usbotg: usb@5100000 {
+ 			compatible = "allwinner,sun50i-h616-musb",
+ 				     "allwinner,sun8i-h3-musb";
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts b/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts
+index 4a2a92e7892a..0db5b58188d0 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts
+@@ -116,10 +116,6 @@ &ir {
+ 	status = "okay";
+ };
+ 
+-&i2c3 {
+-	status = "okay";
+-};
+-
+ &emac1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&rmii_pins>;
+@@ -247,6 +243,17 @@ &uart1 {
+ 	pinctrl-0 = <&uart1_pins>, <&uart1_rts_cts_pins>;
+ 	uart-has-rtscts;
+ 	status = "okay";
++
++	bluetooth {
++		compatible = "brcm,bcm43438-bt";
++		shutdown-gpios = <&pio 6 19 GPIO_ACTIVE_HIGH>; /* PG19 */
++		clocks = <&rtc CLK_OSC32K_FANOUT>;
++		host-wakeup-gpios = <&pio 6 16 GPIO_ACTIVE_HIGH>; /* PG16 */
++		clock-names = "lpo";
++		vddio-supply = <&reg_aldo1>;
++		device-wakeup-gpios = <&pio 6 17 GPIO_ACTIVE_HIGH>; /* PG17 */
++		vbat-supply = <&reg_dldo1>;
++	};
+ };
+ 
+ &usbotg {
+-- 
+2.39.2
+
