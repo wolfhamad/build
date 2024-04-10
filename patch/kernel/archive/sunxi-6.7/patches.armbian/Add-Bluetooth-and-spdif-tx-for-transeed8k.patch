@@ -134,7 +134,7 @@ index 4a2a92e7892a..0db5b58188d0 100644
 +		clocks = <&rtc CLK_OSC32K_FANOUT>;
 +		host-wakeup-gpios = <&pio 6 16 GPIO_ACTIVE_HIGH>; /* PG16 */
 +		clock-names = "lpo";
-+		vddio-supply = <&reg_aldo1>;
++		vddio-supply = <&reg_dldo1>;
 +		device-wakeup-gpios = <&pio 6 17 GPIO_ACTIVE_HIGH>; /* PG17 */
 +		vbat-supply = <&reg_dldo1>;
 +	};
