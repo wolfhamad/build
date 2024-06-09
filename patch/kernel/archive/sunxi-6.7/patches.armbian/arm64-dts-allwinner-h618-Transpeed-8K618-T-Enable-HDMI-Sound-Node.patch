@@ -17,7 +17,7 @@ index 42d8ae6aeaa1..4a2a92e7892a 100644
 @@ -91,6 +91,22 @@ hdmi_out_con: endpoint {
  	};
  };
-+
+
 +&ahub_dam_plat {
 +	status = "okay";
 +};
