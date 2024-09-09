@@ -1,0 +1,52 @@
+From b1980d04660591367cd99097df0117752c2ba7fd Mon Sep 17 00:00:00 2001
+From: Nick Alilovic <nickalilovic@gmail.com>
+Date: Mon, 22 Jan 2024 20:48:19 -0500
+Subject: [PATCH 2/2] configs: Transpeed 8K618-T: Add Transpeed 8K618-T board
+ support
+
+This is a Chinese TV box based on Allwinner H618 SoC.
+
+The DRAM parameters were derived from the values found in a firmware update.
+
+Signed-off-by: Nick Alilovic <nickalilovic@gmail.com>
+---
+ configs/transpeed-8k618-t_defconfig | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+ create mode 100644 configs/transpeed-8k618-t_defconfig
+
+diff --git a/configs/transpeed-8k618-t_defconfig b/configs/transpeed-8k618-t_defconfig
+new file mode 100644
+index 0000000000..020d3974af
+--- /dev/null
++++ b/configs/transpeed-8k618-t_defconfig
+@@ -0,0 +1,27 @@
++CONFIG_ARM=y
++CONFIG_ARCH_SUNXI=y
++CONFIG_DEFAULT_DEVICE_TREE="sun50i-h618-transpeed-8k618-t"
++CONFIG_SPL=y
++CONFIG_DRAM_SUN50I_H616_DX_ODT=0x03030303
++CONFIG_DRAM_SUN50I_H616_DX_DRI=0x0e0e0e0e
++CONFIG_DRAM_SUN50I_H616_CA_DRI=0x1f12
++CONFIG_DRAM_SUN50I_H616_TPR0=0xc0001002
++CONFIG_DRAM_SUN50I_H616_TPR10=0x2f1107
++CONFIG_DRAM_SUN50I_H616_TPR11=0xddddcccc
++CONFIG_DRAM_SUN50I_H616_TPR12=0xeddc7665
++CONFIG_MACH_SUN50I_H616=y
++CONFIG_SUNXI_DRAM_H616_DDR3_1333=y
++CONFIG_DRAM_CLK=648
++CONFIG_MMC_SUNXI_SLOT_EXTRA=2
++CONFIG_R_I2C_ENABLE=y
++# CONFIG_SYS_MALLOC_CLEAR_ON_INIT is not set
++CONFIG_SPL_I2C=y
++CONFIG_SPL_SYS_I2C_LEGACY=y
++CONFIG_SYS_I2C_MVTWSI=y
++CONFIG_SYS_I2C_SLAVE=0x7f
++CONFIG_SYS_I2C_SPEED=400000
++CONFIG_SUPPORT_EMMC_BOOT=y
++CONFIG_AXP313_POWER=y
++CONFIG_AXP_DCDC3_VOLT=1360
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_OHCI_HCD=y
+-- 
+2.34.1
+
