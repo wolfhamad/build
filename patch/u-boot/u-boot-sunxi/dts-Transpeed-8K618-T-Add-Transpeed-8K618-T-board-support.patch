@@ -22,7 +22,7 @@ index 0374b5d11a..cf8c93a24d 100644
  	sun50i-h313-x96q-lpddr3.dtb \
 -	sun50i-h616-x96-mate.dtb
 +	sun50i-h616-x96-mate.dtb \
-+	sun50i-h618-transpeed-8k618-t.dts
++	sun50i-h618-transpeed-8k618-t.dtb
  dtb-$(CONFIG_MACH_SUN50I) += \
  	sun50i-a64-amarula-relic.dtb \
  	sun50i-a64-bananapi-m64.dtb \
