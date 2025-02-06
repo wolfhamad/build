@@ -84704,16 +84704,17 @@ diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.4/drivers/ne
 +	rm -rf modules.order Module.symvers .modules.order.cmd .Module.symvers.cmd .tmp_versions/
 +
 diff --git a/drivers/net/wireless/Kconfig b/drivers/net/wireless/Kconfig
-index 8f4d2a5bdba6..88ed1c9f0e40 100644
+index 6cdfdc9ab44b..090da7eece6a 100644
 --- a/drivers/net/wireless/Kconfig
 +++ b/drivers/net/wireless/Kconfig
-@@ -45,6 +45,7 @@ source "drivers/net/wireless/rtl8189es/Kconfig"
+@@ -43,6 +43,7 @@ source "drivers/net/wireless/rtl8189fs/Kconfig"
+ source "drivers/net/wireless/rtl8189es/Kconfig"
  source "drivers/net/wireless/zydas/Kconfig"
  source "drivers/net/wireless/quantenna/Kconfig"
- source "drivers/net/wireless/uwe5622/Kconfig"
-+source "drivers/net/wireless/aic8800_sdio/Kconfig"
++source "drivers/net/wireless/aic8800_sdio/Kconfig" 
  
  source "drivers/net/wireless/virtual/Kconfig"
+
  
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.4/drivers/net/wireless/Makefile linux-6.9.4/drivers/net/wireless/Makefile
 --- linux-6.9.4/drivers/net/wireless/Makefile	2024-06-14 17:05:16.121340851 +0200

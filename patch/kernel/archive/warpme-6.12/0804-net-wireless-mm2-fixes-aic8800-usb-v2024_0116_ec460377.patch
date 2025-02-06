@@ -339,10 +339,11 @@ diff --speed-large-files --no-dereference --minimal -Naur linux-6.12-rc5/drivers
  	
      return 0;
  }
-diff --speed-large-files --no-dereference --minimal -Naur linux-6.12-rc5/drivers/net/wireless/aic8800_usb/aic_load_fw/aicbluetooth.c linux-6.12-rc5/drivers/net/wireless/aic8800_usb/aic_load_fw/aicbluetooth.c
---- linux-6.12-rc5/drivers/net/wireless/aic8800_usb/aic_load_fw/aicbluetooth.c	2024-11-03 17:46:40.320024863 +0100
-+++ linux-6.12-rc5/drivers/net/wireless/aic8800_usb/aic_load_fw/aicbluetooth.c	2024-11-03 17:44:39.690024460 +0100
-@@ -195,7 +195,7 @@
+diff --git a/drivers/net/wireless/aic8800_usb/aic_load_fw/aicbluetooth.c b/drivers/net/wireless/aic8800_usb/aic_load_fw/aicbluetooth.c
+index bda29b1cf3fc..7c9ae29e0e48 100644
+--- a/drivers/net/wireless/aic8800_usb/aic_load_fw/aicbluetooth.c
++++ b/drivers/net/wireless/aic8800_usb/aic_load_fw/aicbluetooth.c
+@@ -195,7 +195,7 @@ void aic_bt_platform_deinit(struct aic_usb_dev *usbdev)
  }
  
  #define MD5(x) x[0],x[1],x[2],x[3],x[4],x[5],x[6],x[7],x[8],x[9],x[10],x[11],x[12],x[13],x[14],x[15]
@@ -351,19 +352,19 @@ diff --speed-large-files --no-dereference --minimal -Naur linux-6.12-rc5/drivers
  
  static int aic_load_firmware(u32 ** fw_buf, const char *name, struct device *device)
  {
-@@ -271,9 +271,9 @@
+@@ -271,9 +271,9 @@ static int aic_load_firmware(u32 ** fw_buf, const char *name, struct device *dev
      } else {
      #if defined(CONFIG_PLATFORM_UBUNTU)
          if (usb_dev->chipid == PRODUCT_ID_AIC8800) {
 -            len = snprintf(path, FW_PATH_MAX, "%s/%s/%s",aic_default_fw_path, "aic8800", name);
-+            len = snprintf(path, FW_PATH_MAX, "%s/%s/%s",aic_default_fw_path, "aic8800_usb", name);
++	    len = snprintf(path, FW_PATH_MAX, "%s/%s/%s",aic_default_fw_path, "aic8800_usb", name);
          } else if (usb_dev->chipid == PRODUCT_ID_AIC8800D80) {
 -            len = snprintf(path, FW_PATH_MAX, "%s/%s/%s",aic_default_fw_path, "aic8800D80", name);
-+            len = snprintf(path, FW_PATH_MAX, "%s/%s/%s",aic_default_fw_path, "aic8800_usb", name); //xxxx
++	    len = snprintf(path, FW_PATH_MAX, "%s/%s/%s",aic_default_fw_path, "aic8800_usb", name);
          } else {
              printk("%s unknown chipid %d\n", __func__, usb_dev->chipid);
          }
-@@ -411,7 +411,7 @@
+@@ -411,7 +411,7 @@ int rwnx_plat_bin_fw_upload_android(struct aic_usb_dev *usbdev, u32 fw_addr,
      }
  
      /* Copy the file on the Embedded side */
@@ -372,7 +373,7 @@ diff --speed-large-files --no-dereference --minimal -Naur linux-6.12-rc5/drivers
  
      if (size > 1024) {// > 1KB data
          for (i = 0; i < (size - 1024); i += 1024) {//each time write 1KB
-@@ -435,7 +435,7 @@
+@@ -435,7 +435,7 @@ int rwnx_plat_bin_fw_upload_android(struct aic_usb_dev *usbdev, u32 fw_addr,
          dst = NULL;
      }
  
@@ -381,16 +382,16 @@ diff --speed-large-files --no-dereference --minimal -Naur linux-6.12-rc5/drivers
  
      return err;
  }
-@@ -807,7 +807,7 @@
+@@ -807,7 +807,7 @@ int8_t rwnx_atoi(char *value){
  	return result;
  }
  
 -void get_fw_path(char* fw_path){
-+void get_usb_fw_path(char* fw_path){
++void get_usb_fw_path(char* fw_path){ 
  	if (strlen(aic_fw_path) > 0) {
  		memcpy(fw_path, aic_fw_path, strlen(aic_fw_path));
  	}else{
-@@ -819,7 +819,7 @@
+@@ -819,7 +819,7 @@ void set_testmode(int val){
  	testmode = val;
  }
  
@@ -399,7 +400,7 @@ diff --speed-large-files --no-dereference --minimal -Naur linux-6.12-rc5/drivers
  	return testmode;
  }
  
-@@ -832,9 +832,9 @@
+@@ -832,9 +832,9 @@ int get_adap_test(void){
      return adap_test;
  }
  
@@ -411,7 +412,7 @@ diff --speed-large-files --no-dereference --minimal -Naur linux-6.12-rc5/drivers
  
  EXPORT_SYMBOL(set_testmode);
  
-@@ -1079,7 +1079,7 @@
+@@ -1079,7 +1079,7 @@ struct aicbt_patch_table *aicbt_patch_table_alloc(struct aic_usb_dev *usbdev,con
  	size = aic_load_firmware((u32 **)&rawdata, filename, dev);
  
  	/* Copy the file on the Embedded side */
@@ -436,10 +437,11 @@ diff --speed-large-files --no-dereference --minimal -Naur linux-6.12-rc5/drivers
      list_for_each_entry(cur, &cmd_mgr->cmds, list) {
          cmd_dump(cur);
      }
-diff --speed-large-files --no-dereference --minimal -Naur linux-6.12-rc5/drivers/net/wireless/aic8800_usb/aic_load_fw/aic_bluetooth_main.c linux-6.12-rc5/drivers/net/wireless/aic8800_usb/aic_load_fw/aic_bluetooth_main.c
---- linux-6.12-rc5/drivers/net/wireless/aic8800_usb/aic_load_fw/aic_bluetooth_main.c	2024-11-03 17:46:40.320024863 +0100
-+++ linux-6.12-rc5/drivers/net/wireless/aic8800_usb/aic_load_fw/aic_bluetooth_main.c	2024-11-03 17:44:39.690024460 +0100
-@@ -20,7 +20,7 @@
+diff --git a/drivers/net/wireless/aic8800_usb/aic_load_fw/aic_bluetooth_main.c b/drivers/net/wireless/aic8800_usb/aic_load_fw/aic_bluetooth_main.c
+index 9d1442d2d2fc..b246f773558e 100644
+--- a/drivers/net/wireless/aic8800_usb/aic_load_fw/aic_bluetooth_main.c
++++ b/drivers/net/wireless/aic8800_usb/aic_load_fw/aic_bluetooth_main.c
+@@ -20,7 +20,7 @@ int adap_test = 0;
  char paringid[100];
  int n_para = 1;
  int ble_scan_wakeup_reboot_time = 1000;
