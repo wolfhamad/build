@@ -6,4 +6,10 @@ BOOTCONFIG="radxa-a5e_defconfig"
 OVERLAY_PREFIX="sun55i-a527"
 BOOT_LOGO="desktop"
 KERNEL_TARGET="edge"
-FORCE_BOOTSCRIPT_UPDATE="yes"
+
+function post_family_tweaks__radxa_cubie-a5e() {
+	display_alert "Applying wifi firmware"
+	pushd "$SDCARD/lib/firmware"
+	ln -s "aic8800/SDIO/aic8800D80" "aic8800_sdio" # use armbian-firmware
+	popd
+}
