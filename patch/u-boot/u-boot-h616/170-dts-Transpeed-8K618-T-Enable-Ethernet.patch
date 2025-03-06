@@ -44,8 +44,8 @@ index d6631bfe62..acc47a6bea 100644
  &ir {
  	status = "okay";
  };
-diff --git a/configs/transpeed-8k618-t_defconfig b/configs/transpeed-8k618-t_defconfig
-index 1d5a0c264b..dd06da052f 100644
+ diff --git a/configs/transpeed-8k618-t_defconfig b/configs/transpeed-8k618-t_defconfig
+index 1d5a0c264b..4d19460ff1 100644
 --- a/configs/transpeed-8k618-t_defconfig
 +++ b/configs/transpeed-8k618-t_defconfig
 @@ -16,10 +16,14 @@ CONFIG_MMC_SUNXI_SLOT_EXTRA=2
@@ -56,8 +56,7 @@ index 1d5a0c264b..dd06da052f 100644
  CONFIG_SPL_SYS_I2C_LEGACY=y
  CONFIG_SYS_I2C_MVTWSI=y
  CONFIG_SYS_I2C_SLAVE=0x7f
--CONFIG_SYS_I2C_SPEED=400000
-+CONFIG_SYS_I2C_SPEED=100000
+ CONFIG_SYS_I2C_SPEED=400000
 +CONFIG_PHY_REALTEK=y
 +CONFIG_SUN8I_EMAC=y
 +CONFIG_I2C3_ENABLE=y
