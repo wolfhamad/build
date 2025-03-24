@@ -41,6 +41,11 @@ case $BRANCH in
 		declare -g KERNELBRANCH="tag:v6.12.11"
 		KERNELPATCHDIR="archive/warpme-${KERNEL_MAJOR_MINOR}"
 		;;
+	dev)
+		declare -g KERNEL_MAJOR_MINOR="6.14" # Major and minor versions of this kernel.
+		declare -g KERNELBRANCH="tag:v6.14-rc7"
+		KERNELPATCHDIR="archive/warpme-${KERNEL_MAJOR_MINOR}"
+		;;
 esac
 
 
