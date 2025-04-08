@@ -1,0 +1,26 @@
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts b/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts
+index 26b17d0da1e8..8c03c3b105a4 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h618-transpeed-8k618-t.dts
+@@ -253,6 +253,17 @@ &uart1 {
+ 	pinctrl-0 = <&uart1_pins>, <&uart1_rts_cts_pins>;
+ 	uart-has-rtscts;
+ 	status = "okay";
++
++	bluetooth {
++		compatible = "brcm,bcm43438-bt";
++		shutdown-gpios = <&pio 6 19 GPIO_ACTIVE_HIGH>; /* PG19 */
++		clocks = <&rtc CLK_OSC32K_FANOUT>;
++		host-wakeup-gpios = <&pio 6 16 GPIO_ACTIVE_HIGH>; /* PG16 */
++		clock-names = "lpo";
++		vddio-supply = <&reg_dldo1>;
++		device-wakeup-gpios = <&pio 6 17 GPIO_ACTIVE_HIGH>; /* PG17 */
++		vbat-supply = <&reg_dldo1>;
++	};
+ };
+ 
+ &usbotg {
+-- 
+2.34.1
+
