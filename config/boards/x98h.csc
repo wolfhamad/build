@@ -5,7 +5,7 @@ BOARD_MAINTAINER="Nick A"
 BOOTCONFIG="x98h_defconfig"
 OVERLAY_PREFIX="sun50i-h616"
 BOOT_LOGO="desktop"
-KERNEL_TARGET="edge"
+KERNEL_TARGET="edge,dev"
 FORCE_BOOTSCRIPT_UPDATE="yes"
 
 function post_family_tweaks__x98h() {
