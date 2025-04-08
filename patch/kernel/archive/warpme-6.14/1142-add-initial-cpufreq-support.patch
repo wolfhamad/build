@@ -1,8 +1,3 @@
-
-From: iuncuim <iuncuim@gmail.com>
-Signed-off-by: Mikhail Kalashnikov <iuncuim@gmail.com>
-
-
 diff --git a/drivers/clk/sunxi-ng/Makefile b/drivers/clk/sunxi-ng/Makefile
 index 0653bd649..0f87209ee 100644
 --- a/drivers/clk/sunxi-ng/Makefile
