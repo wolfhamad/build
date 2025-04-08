@@ -1,3 +1,8 @@
+
+From: iuncuim <iuncuim@gmail.com>
+Signed-off-by: Mikhail Kalashnikov <iuncuim@gmail.com>
+
+
 diff --git a/drivers/clk/sunxi-ng/Makefile b/drivers/clk/sunxi-ng/Makefile
 index 0653bd649..0f87209ee 100644
 --- a/drivers/clk/sunxi-ng/Makefile
@@ -451,6 +456,20 @@ index 000000000..608fba4ed
 +#define CLK_CPU_MAX_NO	(CLK_PLL_CPUB + 1)
 +
 +#endif /* _DT_BINDINGS_CLK_CPU_SUN55I_A523_H_ */
+-- 
+2.49.0
+
+From 6fd35ce0c854321eac0d98e95611f94913ed1985 Mon Sep 17 00:00:00 2001
+From: iuncuim <iuncuim@gmail.com>
+Date: Sun, 30 Mar 2025 15:09:10 +0300
+Subject: [PATCH 1/2] axp20x: HACK: mfd and multiple axp on the bus
+
+Signed-off-by: Mikhail Kalashnikov <iuncuim@gmail.com>
+---
+ .../boot/dts/allwinner/sun50i-h700-anbernic-rg35xx-2024.dts | 1 +
+ drivers/mfd/axp20x.c                                        | 6 +++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h700-anbernic-rg35xx-2024.dts b/arch/arm64/boot/dts/allwinner/sun50i-h700-anbernic-rg35xx-2024.dts
 index f71608e7c..e1591a83e 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h700-anbernic-rg35xx-2024.dts
@@ -480,6 +499,19 @@ index cff56deba..d7c700127 100644
  			      axp20x->nr_cells, NULL, 0, NULL);
  
  	if (ret) {
+-- 
+2.49.0
+
+From 38225acf481a71465bc265461b444715d06459a6 Mon Sep 17 00:00:00 2001
+From: iuncuim <iuncuim@gmail.com>
+Date: Fri, 4 Apr 2025 10:19:13 +0800
+Subject: [PATCH] regulator: axp20x: force polyphase setup for axp323
+
+Signed-off-by: Mikhail Kalashnikov <iuncuim@gmail.com>
+---
+ drivers/regulator/axp20x-regulator.c          | 20 +++++++++++++++++++
+ 5 files changed, 36 insertions(+), 4 deletions(-)
+
 diff --git a/drivers/regulator/axp20x-regulator.c b/drivers/regulator/axp20x-regulator.c
 index dca99cfb7..670c3e46d 100644
 --- a/drivers/regulator/axp20x-regulator.c
