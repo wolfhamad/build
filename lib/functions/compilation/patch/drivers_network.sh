@@ -455,7 +455,7 @@ driver_uwe5622() {
 
 	# Wireless drivers for Unisoc uwe5622 wireless
 
-	if linux-version compare "${version}" ge 5.15 && [[ "$LINUXFAMILY" == sunxi* || "$LINUXFAMILY" == rockchip64 || "$LINUXFAMILY" == rk35xx ]]; then
+	if linux-version compare "${version}" ge 5.15 && [[ "$LINUXFAMILY" == sunxi* || "$LINUXFAMILY" == rockchip64 || "$LINUXFAMILY" == rk35xx || "$LINUXFAMILY" == sun55iw3 ]]; then
 
 		display_alert "Adding" "Drivers for Unisoc uwe5622 found on some Allwinner and Rockchip boards" "info"
 
