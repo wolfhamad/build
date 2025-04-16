@@ -28,7 +28,7 @@ diff --speed-large-files --no-dereference --minimal -Naur linux-6.6/arch/arm64/b
 +
 +/ {
 +	model = "Vontar H618";
-+	compatible = "tanix,tx6s", "allwinner,sun50i-h616";
++	compatible = "vontar,h618", "allwinner,sun50i-h616";
 +
 +	aliases {
 +		mmc0 = &mmc0;
