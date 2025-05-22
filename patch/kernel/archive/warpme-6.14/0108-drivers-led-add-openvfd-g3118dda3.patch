@@ -1,3 +1,10 @@
+
+This is backport of https://github.com/arthur-liberman/linux_openvfd/commits/master/
+as in-kernel module with addiitons to support rk35xx more than 4 gpio banks
+
+Based on fantastic work of Arthur Lberman in https://github.com/arthur-liberman/linux_openvfd
+
+
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/Kconfig linux-6.9.3/drivers/misc/Kconfig
 --- linux-6.9.3/drivers/misc/Kconfig	2024-05-30 09:45:04.000000000 +0200
 +++ linux-6.9.3/drivers/misc/Kconfig	2024-06-09 10:53:18.031409790 +0200
@@ -1038,7 +1045,7 @@ diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/mi
 +0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x01,0xC0,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,  // |
 +0x1E,0x00,0x1F,0x00,0x07,0x80,0x03,0x80,0x01,0x80,0x03,0x80,0x03,0x80,0x03,0x80,0x03,0x80,0x03,0x80,0x01,0x80,0x01,0xC0,0x01,0xC0,0x00,0xFC,0x00,0x7C,0x00,0xFC,0x01,0xC0,0x01,0xC0,0x01,0x80,0x03,0x80,0x03,0x80,0x03,0x80,0x03,0x80,0x01,0x80,0x03,0x80,0x07,0x80,0x1F,0x00,0x1E,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,  // }
 +0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x0C,0x00,0x3E,0x00,0x3F,0x00,0x7F,0x02,0x63,0x87,0xE1,0xC7,0xC1,0xCE,0x40,0xFE,0x00,0x7C,0x00,0x38,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,  // ~
-+0x00,0x00,0x00,0x00,0x07,0xC0,0x0F,0xE0,0x1C,0x70,0x38,0x38,0x30,0x18,0x30,0x18,0x30,0x18,0x38,0x38,0x1C,0x70,0x0F,0xE0,0x07,0xC0,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,  // \B0
++0x00,0x00,0x00,0x00,0x07,0xC0,0x0F,0xE0,0x1C,0x70,0x38,0x38,0x30,0x18,0x30,0x18,0x30,0x18,0x38,0x38,0x1C,0x70,0x0F,0xE0,0x07,0xC0,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,  // °
 +};
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/Grotesk16x32_v.h linux-6.9.3/drivers/misc/openvfd/controllers/fonts/Grotesk16x32_v.h
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/Grotesk16x32_v.h	1970-01-01 01:00:00.000000000 +0100
@@ -1376,7 +1383,7 @@ diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/mi
 +0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x01,0xE0,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,  // |
 +0x03,0xF0,0x00,0x00,0x03,0xFE,0x00,0x00,0x03,0xFF,0x00,0x00,0x03,0xFF,0x80,0x00,0x03,0xFF,0x80,0x00,0x00,0x0F,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xE0,0x00,0x00,0x07,0xE0,0x00,0x00,0x03,0xE0,0x00,0x00,0x03,0xF0,0x00,0x00,0x03,0xF8,0x00,0x00,0x01,0xFE,0x00,0x00,0x00,0x7F,0xF0,0x00,0x00,0x0F,0xF0,0x00,0x00,0x1F,0xF0,0x00,0x00,0xFF,0xF0,0x00,0x01,0xFE,0x00,0x00,0x03,0xF8,0x00,0x00,0x03,0xF0,0x00,0x00,0x03,0xE0,0x00,0x00,0x07,0xE0,0x00,0x00,0x07,0xE0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x07,0xC0,0x00,0x00,0x0F,0xC0,0x00,0x00,0x7F,0xC0,0x00,0x03,0xFF,0x80,0x00,0x03,0xFF,0x00,0x00,0x03,0xFE,0x00,0x00,0x03,0xF8,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,  // }
 +0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x03,0xF0,0x00,0x00,0x07,0xFC,0x00,0x00,0x0F,0xFC,0x00,0x00,0x0F,0xFE,0x00,0x00,0x1F,0xFF,0x00,0x00,0x3F,0xFF,0x00,0x08,0x3E,0x1F,0x80,0x0E,0x3C,0x0F,0xC0,0x1E,0x7C,0x07,0xC0,0x1F,0x7C,0x07,0xE0,0x3E,0x78,0x03,0xE0,0x3E,0xF8,0x03,0xF0,0x7C,0x70,0x01,0xF8,0xFC,0x30,0x00,0xFF,0xF8,0x00,0x00,0xFF,0xF8,0x00,0x00,0x7F,0xF0,0x00,0x00,0x3F,0xF0,0x00,0x00,0x1F,0xE0,0x00,0x00,0x0F,0x80,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,  // ~
-+0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x0F,0xC0,0x00,0x00,0x3F,0xF0,0x00,0x00,0xFF,0xFC,0x00,0x01,0xF8,0x7E,0x00,0x01,0xE0,0x1E,0x00,0x03,0xC0,0x0F,0x00,0x03,0x80,0x07,0x00,0x07,0x80,0x07,0x80,0x07,0x00,0x03,0x80,0x07,0x00,0x03,0x80,0x07,0x00,0x03,0x80,0x07,0x00,0x03,0x80,0x07,0x80,0x07,0x80,0x03,0x80,0x07,0x00,0x03,0xC0,0x0F,0x00,0x01,0xE0,0x1E,0x00,0x00,0xF8,0x7E,0x00,0x00,0x7F,0xFC,0x00,0x00,0x3F,0xF0,0x00,0x00,0x0F,0xC0,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,  // \B0
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x0F,0xC0,0x00,0x00,0x3F,0xF0,0x00,0x00,0xFF,0xFC,0x00,0x01,0xF8,0x7E,0x00,0x01,0xE0,0x1E,0x00,0x03,0xC0,0x0F,0x00,0x03,0x80,0x07,0x00,0x07,0x80,0x07,0x80,0x07,0x00,0x03,0x80,0x07,0x00,0x03,0x80,0x07,0x00,0x03,0x80,0x07,0x00,0x03,0x80,0x07,0x80,0x07,0x80,0x03,0x80,0x07,0x00,0x03,0xC0,0x0F,0x00,0x01,0xE0,0x1E,0x00,0x00,0xF8,0x7E,0x00,0x00,0x7F,0xFC,0x00,0x00,0x3F,0xF0,0x00,0x00,0x0F,0xC0,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,  // °
 +};
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons16x16_h.h linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons16x16_h.h
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons16x16_h.h	1970-01-01 01:00:00.000000000 +0100
@@ -1490,210 +1497,205 @@ diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/mi
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/00none.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/00none.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00
++BM~       >   (               @                       ÿÿÿ                                                                 
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/01channel.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/01channel.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/01channel.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/01channel.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00 \00\000\00\00@\00\00\80\00\00\FC\00\00\80\00\00\80\00\00\BF\FA\00\00\80\00\00\BF\FA\00\00\80\00\00\BF\FA\00\00\80\00\00\80\00\00\FC\00\00
++BM~       >   (               @                       ÿÿÿ        0  @  €  ü  €  €  ¿ú  €  ¿ú  €  ¿ú  €  €  ü  
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/02temp.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/02temp.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/02temp.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/02temp.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\008\00\00\00\00\00\00\008\00\00\00\80\00\009\9C\00\00\80\00\00\9C\00\00\80\00\00\9C\00\00\80\00\00\C0\00\00\E0\00\00\E0\00\00\E0\00\00\E0\00\00\00\00\00\00
++BM~       >   (               @                       ÿÿÿ 8       8   €  9œ  €  œ  €  œ  €  À  à  à  à  à  À  
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/03calendar.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/03calendar.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/03calendar.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/03calendar.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00`\00\00P\00\00?\F8\00\00@\00\00\80\00\00\86\DA\00\00\86\DA\00\00\80\00\00\B6\DA\00\00\B6\DA\00\00\80\00\00\B6\C2\00\00\B6\C2\00\00\80\00\00@\00\00?\F8\00\00
++BM~       >   (               @                       ÿÿÿ `  P  ?ø  @  €  †Ú  †Ú  €  ¶Ú  ¶Ú  €  ¶Â  ¶Â  €  @  ?ø  
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/04media.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/04media.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/04media.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/04media.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1,7 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\FF\FE\00\00\AA\AA\00\00\FF\FE\00\00\A0
-+\00\00\A2
-+\00\00\A3
-+\00\00\A3\8A\00\00\A3\CA\00\00\A3\8A\00\00\A3
-+\00\00\A2
-+\00\00\A0
-+\00\00\FF\FE\00\00\AA\AA\00\00\FF\FE\00\00\00\00\00\00
++BM~       >   (               @                       ÿÿÿ ÿþ  ªª  ÿþ   
++  ¢
++  £
++  £Š  £Ê  £Š  £
++  ¢
++   
++  ÿþ  ªª  ÿþ      
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/05tv.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/05tv.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/05tv.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/05tv.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00\00\00\00\00\00\00`\00\00\C0\00\00\FC\00\00\FF\FE\00\00\F8\00\00\98\00\00\90\00\00\F0\00\00\90\00\00\90\00\00\F8\00\00\FF\FE\00\00\FC\00\00
++BM~       >   (               @                       ÿÿÿ           `  À  ü  ÿþ  ø  ˜    ð      ø  ÿþ  ü  
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/10eth.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/10eth.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/10eth.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/10eth.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\C0\00\00@\00\00@\00\00@\00\00\C0\00\00\00\00\00\00\00\00?\F8\00\00 \00\00 \00\00\F8>\00\00\88"\00\00\88"\00\00\88"\00\00\F8>\00\00\00\00\00\00
++BM~       >   (               @                       ÿÿÿ À  @  @  @  À        ?ø        ø>  ˆ"  ˆ"  ˆ"  ø>      
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/11wifi.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/11wifi.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/11wifi.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/11wifi.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00\00\00\00\00\C0\00\00\F8\00\00<<\00\00q\8E\00\00g\E6\00\00\F0\00\00x\00\00\00\00\80\00\00\C0\00\00\C0\00\00\80\00\00\00\00\00\00\00\00\00\00
++BM~       >   (               @                       ÿÿÿ         À  ø  <<  qŽ  gæ  ð  x    €  À  À  €          
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/12play.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/12play.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/12play.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/12play.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00\00\00\00\00\00\00\00\00\80\00\00\C0\00\00\E0\00\00\F0\00\00\E0\00\00\C0\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00
++BM~       >   (               @                       ÿÿÿ             €  À  à  ð  à  À  €                  
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/13pause.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/13pause.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/13pause.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/13pause.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\008\00\00>|\00\00>|\00\00>|\00\00>|\00\00>|\00\00>|\00\00>|\00\00>|\00\00>|\00\00>|\00\00>|\00\00>|\00\00>|\00\008\00\00\00\00\00\00
++BM~       >   (               @                       ÿÿÿ 8  >|  >|  >|  >|  >|  >|  >|  >|  >|  >|  >|  >|  >|  8      
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/14usb.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/14usb.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/14usb.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/14usb.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\C4\00\00\C4\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00\80\00\00\80\00\00\80\00\00
-\80\00\00
-\A0\00\00
-\B0\00\00\A0\00\00\A0\00\00\E0\00\00\C0\00\00\80\00\00\80\00\00\C0\00\00\C0\00\00\80\00\00
++BM~       >   (               @   Ä  Ä              ÿÿÿ     €  €  €  €     °        à  À  €  €  À  À  €  
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/15sd.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/15sd.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/15sd.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/15sd.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\FC\00\00\00\00	T\00\00T\00\00!T\00\00!T\00\00 \00\00 \00\00.\E4\00\00(\94\00\00.\94\00\00"\94\00\00.\E4\00\00 \00\00?\FC\00\00\00\00\00\00
++BM~       >   (               @                       ÿÿÿ ü    	T  T  !T  !T        .ä  (”  .”  "”  .ä     ?ü      
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/16bt.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/16bt.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/16bt.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/16bt.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00\00\00\00\80\00\00@\00\00	 \00\00 \00\00@\00\00\80\00\00\80\00\00@\00\00 \00\00	 \00\00@\00\00\80\00\00\00\00\00\00\00\00\00
++BM~       >   (               @                       ÿÿÿ        €  @  	      @  €  €  @     	   @  €         
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/17apps.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/17apps.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/17apps.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/17apps.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00?\F8\00\00@\00\00\80\00\00\9E\F2\00\00\9E\F2\00\00\9E\F2\00\00\9E\F2\00\00\80\00\00\9E\F2\00\00\9E\F2\00\00\9E\F2\00\00\9E\F2\00\00\80\00\00@\00\00?\F8\00\00\00\00\00\00
++BM~       >   (               @                       ÿÿÿ ?ø  @  €  žò  žò  žò  žò  €  žò  žò  žò  žò  €  @  ?ø      
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/18setup.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/18setup.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/18setup.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/16/18setup.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM~\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\C0\00\00#\C4\00\00\FE\00\00?\FC\00\00?\FC\00\00>|\00\00\FC?\00\00\F8\00\00\F8\00\00\FC?\00\00>|\00\00?\FC\00\00?\FC\00\00\FE\00\00#\C4\00\00\C0\00\00
++BM~       >   (               @                       ÿÿÿ À  #Ä  þ  ?ü  ?ü  >|  ü?  ø  ø  ü?  >|  ?ü  ?ü  þ  #Ä  À  
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/00none.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/00none.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/00none.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/00none.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00
++BM¾       >   (                 €                       ÿÿÿ                                                                                                                                 
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/01channel.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/01channel.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/01channel.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/01channel.bmp	2024-06-09 10:53:18.031409790 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\80\00\C0\00\C0\80\00`\00\000\00\00\00\00\00\000\00\00`\00\00\C0\00\FF\FF\E0\FF\FF\F0\00\008\00\00\00\00\00\00\FF\FF\98\FF\FF\98\00\00\00\00\FF\FF\98\FF\FF\98\00\00\00\00\FF\FF\98\FF\FF\98\00\00\00\00\00\00p\FF\FF\E0\FF\FF\C0\00\00\00\00\00\00\00\00
++BM¾       >   (                 €                       ÿÿÿ € À À€ `  0      0  `  À ÿÿàÿÿð  8      ÿÿ˜ÿÿ˜    ÿÿ˜ÿÿ˜    ÿÿ˜ÿÿ˜      pÿÿàÿÿÀ        
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/02temp.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/02temp.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/02temp.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/02temp.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\C0\00\00`\00\000\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\90\00\00\D0\00\00\D0\00\00\D0\00\00\D0\00\00\D0\00\00\D0\00\00\D0\00\00
-\D8\00\00\CC\00\00\E4\00\007\F6\00\00'\F2\00\00'\F2\00\00'\F2\00\007\F6\00\00\E4\00\00\00\008\00\00\E0\00\00\00\00\00
++BM¾       >   (                 €                       ÿÿÿ  À  `  0                    Ð  Ð  Ð  Ð  Ð  Ð  Ð  Ø  Ì  ä  7ö  'ò  'ò  'ò  7ö  ä    8  à     
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/03calendar.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/03calendar.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/03calendar.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/03calendar.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\C0\80\C0\C0\C0
-\C0\C0\C0<\FF\FC\F0|\FF\FC\F8\FF\FF\FF\FC\FF\FF\FF\FC\E0\00\00\C0\00\00\C0\00\00\C0\00\00\C0<\F3\CC\C0<\F3\CC\C0<\F3\CC\C0<\F3\CC\C0\00\00\C0\00\00\CF<\F3\CC\CF<\F3\CC\CF<\F3\CC\CF<\F3\CC\C0\00\00\C0\00\00\CF<\F0\CF<\F0\CF<\F0\CF<\F0\C0\00\00\E0\00\00\FF\FF\F8?\FF\FF\F0
++BM¾       >   (                 €                       ÿÿÿ À€ÀÀÀÀÀÀ<ÿüð|ÿüøÿÿÿüÿÿÿüà  À  À  À  À<óÌÀ<óÌÀ<óÌÀ<óÌÀ  À  Ï<óÌÏ<óÌÏ<óÌÏ<óÌÀ  À  Ï<ðÏ<ðÏ<ðÏ<ðÀ  à  ÿÿø?ÿÿð
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/04media.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/04media.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/04media.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/04media.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00\00\00\00\00\FF\FF\FF\FF\FF\FF\FF\FF\C61\8Cc\C61\8Cc\C61\8Cc\FF\FF\FF\FF\FF\FF\FF\FF\C3\00\00\C3\C3\00\C3\C3\00\C3\C3\80\C3\C3\E0\C3\C3\F0\C3\C3\F8\C3\C3\F0\C3\C3\E0\C3\C3\80\C3\C3\00\C3\C3\00\C3\C3\00\00\C3\FF\FF\FF\FF\FF\FF\FF\FF\C61\8Cc\C61\8Cc\C61\8Cc\FF\FF\FF\FF\FF\FF\FF\FF\00\00\00\00\00\00\00\00\00\00\00\00
++BM¾       >   (                 €                       ÿÿÿ         ÿÿÿÿÿÿÿÿÆ1ŒcÆ1ŒcÆ1ŒcÿÿÿÿÿÿÿÿÃ  ÃÃ ÃÃ ÃÃ€ÃÃàÃÃðÃÃøÃÃðÃÃàÃÃ€ÃÃ ÃÃ ÃÃ  ÃÿÿÿÿÿÿÿÿÆ1ŒcÆ1ŒcÆ1Œcÿÿÿÿÿÿÿÿ            
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/05tv.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/05tv.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/05tv.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/05tv.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\C4\00\00\C4\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00\80\00\00\C0\00\00\E0\00\00\00\F0\00\00x\00\00<<\00\00x\00\00\F0\00\00\E0\00\FF\FF\F8?\FF\FF\FC\FF\FF\FE\F0\00>\C0\00\C0\00s\C0\00q\80\00s\80\00\80\00\80\00s\80\00q\80\00s\80\00\80\00\C0\00\C0\00\E0\00\FF\FF\FE\FF\FF\FC?\FF\FF\F8\00\00\00\00
++BM¾       >   (                 €   Ä  Ä              ÿÿÿ     €  À  à   ð  x  <<  x  ð  à ÿÿø?ÿÿüÿÿþð >À À sÀ q€ s€ € € s€ q€ s€ € À À à ÿÿþÿÿü?ÿÿø    
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/10eth.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/10eth.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/10eth.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/10eth.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00?\F0\00\00?\F0\00\0000\00\0000\00\0000\00\0000\00\0000\00\0000\00\00?\F0\00\00?\F0\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\C0\FF\FF\C0\00\00\C0\00\00\C0\00\00\C0\00\00\C0\FF\C0\FC\FF\C0\FC\C0\C0\C0\C0\C0\C0\C0\C0\C0\C0\C0\C0\FF\C0\FC\FF\C0\FC\00\00\00\00\00\00\00\00
++BM¾       >   (                 €                       ÿÿÿ  ?ð  ?ð  00  00  00  00  00  00  ?ð  ?ð             ÿÿÀÿÿÀ  À  À  À  ÀÿÀüÿÀüÀÀÀÀÀÀÀÀÀÀÀÀÿÀüÿÀü        
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/11wifi.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/11wifi.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/11wifi.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/11wifi.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00\00\00\00\00\00\00\00\00\00\E0\00\00\F8\00\00\FE\00\FF\FF\80\FF\FF\C0\FF\FF\E0\F8\F0\E0\F8?\80\FC?\E0\FC>\F8|?\FC8\00\FE\00\00\FF\FF\00\FC?\80\F8\C0\E0\C0\C3Ã€\00\E0\00\00\F0\00\00\F0\00\00\F0\00\00\F0\00\00\E0\00\00\C0\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00
++BM¾       >   (                 €                       ÿÿÿ              à  ø  þ ÿÿ€ÿÿÀÿÿàøðàø?€ü?àü>ø|?ü8 þ  ÿÿ ü?€øÀàÀÃÃ€ à  ð  ð  ð  ð  à  À                 
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/12play.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/12play.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/12play.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/12play.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\C0\00\00\00\E0\00\00\00\F0\00\00\00\F8\00\00\00\FC\00\00\00\FE\00\00\00\FF\00\00\00\FF\80\00\00\FF\C0\00\00\FF\E0\00\00\FF\F0\00\00\FF\F8\00\00\FF\FC\00\00\FF\FE\00\00\FF\FF\00\00\FF\FF\00\00\FF\FE\00\00\FF\FC\00\00\FF\F8\00\00\FF\F0\00\00\FF\E0\00\00\FF\C0\00\00\FF\80\00\00\FF\00\00\00\FE\00\00\00\FC\00\00\00\F8\00\00\00\F0\00\00\00\E0\00\00\00\C0\00\00\00\00\00\00\00\00\00\00
++BM¾       >   (                 €                       ÿÿÿ  À   à   ð   ø   ü   þ   ÿ   ÿ€  ÿÀ  ÿà  ÿð  ÿø  ÿü  ÿþ  ÿÿ  ÿÿ  ÿþ  ÿü  ÿø  ÿð  ÿà  ÿÀ  ÿ€  ÿ   þ   ü   ø   ð   à   À          
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/13pause.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/13pause.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/13pause.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/13pause.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\F0\C0\F8\E0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\FC?\F0\F8\E0\F0\C0\00\00\00\00\00\00\00\00
++BM¾       >   (                 €                       ÿÿÿ ðÀøàü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðü?ðøàðÀ        
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/14usb.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/14usb.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/14usb.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/14usb.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\FE\00\00\FE\00\00`\00\00ff\00\00ff\00\00ff\00\00ff\00\00`\00\00`\00\FF\FF\80\FF\FF\C0\00\00`p`\88`\88`\88`\F8`\00\00`p`\88`\88`\88``\00\00`\F0`\00`\00`\00`\F0`\00\00`\FF\FF\E0\FF\FF\C0
++BM¾       >   (                 €                       ÿÿÿ  þ  þ  `  ff  ff  ff  ff  `  ` ÿÿ€ÿÿÀ  `p`ˆ`ˆ`ˆ`ø`  `p`ˆ`ˆ`ˆ``  `ð` ` ` `ð`  `ÿÿàÿÿÀ
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/15sd.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/15sd.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/15sd.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/15sd.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\FF\F0\00\FF\F0\008\000\00p\000\00\E330\C330\83303030303030\00\000\00\000\00\000\00\000\FC\FC0\FC\FE0\C0\C70\C0\C30\FC\C30\FC\C30\C30\C70\FC\FE0\FC\FC0\00\000\00\000\FF\FF\F0\FF\FF\F0\00\00\00\00\00\00\00\00
++BM¾       >   (                 €                       ÿÿÿ  ÿð ÿð 8 0 p 0 ã30Ã30ƒ303030303030  0  0  0  0üü0üþ0ÀÇ0ÀÃ0üÃ0üÃ0Ã0Ç0üþ0üü0  0  0ÿÿðÿÿð        
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/16bt.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/16bt.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/16bt.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/16bt.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00\00\00\00\00\00\00\00\00\80\00\00\C0\00\00\E0\00\00p\00\008\00\00\C3\00\00\E3\00\00s\00\00;\00\008\00\00p\00\00\E0\00\00\C0\00\00\C0\00\00\E0\00\00p\00\008\00\00;\00\00s\00\00\E3\00\00\C3\00\008\00\00p\00\00\E0\00\00\C0\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00
++BM¾       >   (                 €                       ÿÿÿ             €  À  à  p  8  Ã  ã  s  ;  8  p  à  À  À  à  p  8  ;  s  ã  Ã  8  p  à  À  €            
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/17apps.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/17apps.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/17apps.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/17apps.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\FF\FF\C0\FF\FF\E08\00\00pp\00\008\E0\00\00\C0\00\00\C1\FC\FE\C3\FC\FF\C3\FC\FF\C3\FC\FF\C3\FC\FF\C3\FC\FF\C3\FC\FF\C3\FC\FF\C0\00\00\C0\00\00\C3\FC\FF\C3\FC\FF\C3\FC\FF\C3\FC\FF\C3\FC\FF\C3\FC\FF\C3\FC\FF\C1\FC\FE\C0\00\00\E0\00\00p\00\0088\00\00p\FF\FF\E0\FF\FF\C0\00\00\00\00\00\00\00\00
++BM¾       >   (                 €                       ÿÿÿ ÿÿÀÿÿà8  pp  8à  À  ÁüþÃüÿÃüÿÃüÿÃüÿÃüÿÃüÿÃüÿÀ  À  ÃüÿÃüÿÃüÿÃüÿÃüÿÃüÿÃüÿÁüþÀ  à  p  88  pÿÿàÿÿÀ        
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/18setup.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/18setup.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/18setup.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/32/18setup.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\E0\00\00\E0\00\00\E0\00\F0\C0\CF\F1\E0\FF\FF\F0\FF\FF\F8\FF\FF\F8\FF\FF\F0\FF\FF\E0\FF\FF\E0\F8\E0\F0\F8\FF\E0\FF\FF\E0\FF\FF\E0\FF\FF\E0\FF\FF\E0\FF\FF\E0\FF\F0\F0\F8\E0\FF\FF\E0\FF\FF\E0\FF\FF\F0\FF\FF\F8\FF\FF\F8\FF\FF\F0\8F\F1\E0\E0\C0\00\E0\00\00\E0\00\00\E0\00
++BM¾       >   (                 €                       ÿÿÿ  à  à  à ðÀÏñàÿÿðÿÿøÿÿøÿÿðÿÿàÿÿàøàðøÿàÿÿàÿÿàÿÿàÿÿàÿÿàÿððøàÿÿàÿÿàÿÿðÿÿøÿÿøÿÿðñààÀ à  à  à 
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/degree16x32.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/degree16x32.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/degree16x32.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/degree16x32.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\BE\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\00 \00\00\00\00\00\00\00\00\00\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00\00\00\00\00\C0\00\00\E0\00\00p\00\0088\00\000\00\000\00\000\00\0088\00\00p\00\00\E0\00\00\C0\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00
++BM¾       >   (                €                       ÿÿÿ         À  à  p  88  0  0  0  88  p  à  À                                                                              
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/degree24x48.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/degree24x48.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/degree24x48.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/degree24x48.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM\FE\00\00\00\00\00\00\00>\00\00\00(\00\00\00\00\00\000\00\00\00\00\00\00\00\00\00\C0\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00\00\00\00\00\00\00\00\00\FE\00\00\FE\00\00\FF\00\00\87\C0\00\87\C0\00\E0\00\00\E0\00\00\E0\00\00\E0\00\00\E0\00\00\E0\00\E0\00\87\C0\00\87\C0\00\FF\00\00\FE\00\00\FE\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00
++BMþ       >   (      0         À                       ÿÿÿ             þ  þ  ÿ  ‡À ‡À à  à  à  à  à  à à ‡À ‡À ÿ  þ  þ                                                                                                                  
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/degree32x64.bmp linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/degree32x64.bmp
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/degree32x64.bmp	1970-01-01 01:00:00.000000000 +0100
 +++ linux-6.9.3/drivers/misc/openvfd/controllers/fonts/icons_source/degree32x64.bmp	2024-06-09 10:53:18.034743124 +0200
 @@ -0,0 +1 @@
-+BM>\00\00\00\00\00\00>\00\00\00(\00\00\00 \00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\FF\FF\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\C0\00\00?\F0\00\00\FF\FC\00\F8~\00\E0\00\C0\00\80\00\80\80\00\80\00\80\00\80\00\80\80\80\80\00\C0\00\E0\00\00\F8~\00\00\FC\00\00?\F0\00\00\C0\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00
++BM>      >   (       @                                ÿÿÿ                      À  ?ð  ÿü ø~ à À € €€ € € € €€€€ À à  ø~  ü  ?ð  À                                                                                                                                                             
 \ No newline at end of file
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.9.3/drivers/misc/openvfd/controllers/fonts/Retro8x16_v.h linux-6.9.3/drivers/misc/openvfd/controllers/fonts/Retro8x16_v.h
 --- linux-6.9.3/drivers/misc/openvfd/controllers/fonts/Retro8x16_v.h	1970-01-01 01:00:00.000000000 +0100
