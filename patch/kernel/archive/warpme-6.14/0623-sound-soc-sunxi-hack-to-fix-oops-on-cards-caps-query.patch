@@ -81,23 +81,7 @@ diff --speed-large-files --no-dereference --minimal -Naur linux-6.6.1/sound/soc/
  	dai->component = component;
  	dai->dev = dev;
  	dai->driver = dai_drv;
-diff --speed-large-files --no-dereference --minimal -Naur linux-6.6.1/sound/soc/sunxi/sun50iw9-codec.c linux-6.6.1/sound/soc/sunxi/sun50iw9-codec.c
---- linux-6.6.1/sound/soc/sunxi/sun50iw9-codec.c	2023-11-17 11:11:40.303356174 +0100
-+++ linux-6.6.1/sound/soc/sunxi/sun50iw9-codec.c	2023-11-17 10:52:02.243352201 +0100
-@@ -652,12 +652,9 @@
-     return 0;
- }
- 
--static const struct snd_soc_dai_ops dummy_dai_ops = {
--	.probe = sun50i_h616_codec_dai_probe,
--};
--
- static struct snd_soc_dai_driver dummy_cpu_dai = {
-     .name = "sun50i_h616-codec-cpu-dai",
-+    .probe = sun50i_h616_codec_dai_probe,
-     .playback = {
-         .stream_name = "Playback",
-         .channels_min = 1,
+
 diff --speed-large-files --no-dereference --minimal -Naur linux-6.6.1/sound/soc/sunxi_v2/snd_sunxi_ahub.c linux-6.6.1/sound/soc/sunxi_v2/snd_sunxi_ahub.c
 --- linux-6.6.1/sound/soc/sunxi_v2/snd_sunxi_ahub.c	2023-11-17 11:11:40.340022841 +0100
 +++ linux-6.6.1/sound/soc/sunxi_v2/snd_sunxi_ahub.c	2023-11-17 10:52:02.553352202 +0100

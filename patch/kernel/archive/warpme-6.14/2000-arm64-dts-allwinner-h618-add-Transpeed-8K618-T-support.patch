@@ -40,7 +40,7 @@ index ac0a2b7ea6f3..26b17d0da1e8 100644
  
  	reg_vcc5v: vcc5v {
  		/* board wide 5V supply directly from the DC input */
-@@ -51,6 +63,38 @@ wifi_pwrseq: wifi_pwrseq {
+@@ -51,6 +63,27 @@ wifi_pwrseq: wifi_pwrseq {
  	};
  };
  
@@ -58,17 +58,6 @@ index ac0a2b7ea6f3..26b17d0da1e8 100644
 +};
 +
 +&ahub1_mach {
-+	status = "okay";
-+};
-+
-+&codec {
-+	allwinner,audio-routing =
-+	        "Line Out", "LINEOUT";
-+	status = "okay";
-+};
-+
-+&cpu0 {
-+	cpu-supply = <&reg_dcdc2>;
 +	status = "okay";
 +};
 +
