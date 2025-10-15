@@ -101,7 +101,6 @@ function kernel_drivers_prepare_harness() {
 
 	declare -a all_drivers=(
 		driver_generic_bring_back_ipx
-		driver_wifi_injection
 		driver_mt7921u_add_pids
 		driver_rtl8152_rtl8153
 		driver_rtl8189ES
@@ -118,7 +117,7 @@ function kernel_drivers_prepare_harness() {
 		driver_rtl8822cs_bt
 		driver_rtl8723DS
 		driver_rtl8723DU
-		driver_uwe5622
+#		driver_uwe5622
 		driver_rtl8723cs
 	)
 

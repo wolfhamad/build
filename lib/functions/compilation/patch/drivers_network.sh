@@ -34,16 +34,6 @@ function driver_generic_bring_back_ipx() {
 	fi
 }
 
-driver_wifi_injection() {
-	# - Apply driver-level fixes for monitor/injection path for 6.12 series
-	# - Add compatibility shims for cfg80211/mac80211 where API changed in 6.12
-	# - Add Kconfig option and module parameter notes for enabling injection
-	if linux-version compare "${version}" ge 6.12; then
-                display_alert "Adding" "Enables Wi-Fi packet injection and monitor-mode tweaks" "info"
-                process_patch_file "${SRC}/patch/misc/wireless-injection-6.12.patch" "applying"
-	fi
-}
-
 driver_rtl8189ES() {
 
 	# Wireless drivers for Realtek 8189ES chipsets
@@ -442,7 +432,7 @@ driver_rtl88x2cs() {
 	if linux-version compare "${version}" ge 5.9 && [[ "$LINUXFAMILY" == meson64 ]]; then
 
 		# Attach to specific commit (track branch:tune_for_jethub)
-		local rtl88x2csver='commit:39f72eab042da8d74a2c9753cb5865caf103d93c' # Commit date: Oct 13, 2025 (please update when updating commit ref)
+		local rtl88x2csver='commit:0ef9ddd619d2a386df90fd7c32b65958b0d675ed' # Commit date: Aug 30, 2025 (please update when updating commit ref)
 
 		display_alert "Adding" "Wireless drivers for Realtek 88x2cs chipsets ${rtl88x2csver}" "info"
 
@@ -480,97 +470,98 @@ driver_rtl88x2cs() {
 	fi
 }
 
-driver_uwe5622() {
+# driver_uwe5622() {
+#
+#	# Wireless drivers for Unisoc uwe5622 wireless
+#
+#	if linux-version compare "${version}" ge 5.15 && [[ "$LINUXFAMILY" == sunxi* || "$LINUXFAMILY" == rockchip64 || "$LINUXFAMILY" == rk35xx ]]; then
+#
+#		display_alert "Adding" "Drivers for Unisoc uwe5622 found on some Allwinner and Rockchip boards" "info"
+#
+#		if linux-version compare "${version}" ge 6.3; then
+#			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-allwinner-v6.3.patch" "applying"
+#			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-allwinner-bugfix-v6.3.patch" "applying"
+#			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-allwinner-v6.3-compilation-fix.patch" "applying"
+#		else
+#			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-allwinner.patch" "applying"
+#			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-allwinner-bugfix.patch" "applying"
+#		fi
+#
+#		if linux-version compare "${version}" ge 6.4; then
+#			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.4-post.patch" "applying"
+#		fi
+#
+#		process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-warnings.patch" "applying"
+#
+#		# Add to section Makefile
+#		echo "obj-\$(CONFIG_SPARD_WLAN_SUPPORT) += uwe5622/" >> "$kerneldir/drivers/net/wireless/Makefile"
+#
+#		# Don't add this to legacy (<5.0) kernels.
+#		if linux-version compare "${version}" ge 5.0 && linux-version compare "${version}" lt 6.1; then
+#			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-park-link-pre-v6.1.patch" "applying"
+#		fi
+#
+#		if linux-version compare "${version}" ge 6.1; then
+#			if linux-version compare "${version}" ge 6.2 && linux-version compare "${version}" lt 6.3; then # only for 6.2.y
+#				process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-park-link-v6.2-only.patch" "applying"
+#			else # assume 6.1.y y > 30
+#				process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-park-link-v6.1-post.patch" "applying"
+#			fi
+#			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.1.patch" "applying"
+#		fi
+#
+#		if linux-version compare "${version}" ge 6.6; then
+#			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.6-fix-tty-sdio.patch" "applying"
+#		fi
+#
+#		if [[ "$LINUXFAMILY" == sunxi* ]]; then
+#			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-fix-setting-mac-address-for-netdev.patch" "applying"
+#		fi
+#
+#		# Apply patches that adjust the driver only for rockchip platforms
+#		if [[ "$LINUXFAMILY" == rockchip* || "$LINUXFAMILY" == "rk35xx" ]]; then
+#			if linux-version compare "${version}" le 6.1; then
+#				process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-adjust-for-rockchip-pre-6.1.patch"
+#			else
+#				process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-adjust-for-rockchip-post-6.1.patch"
+#			fi
+#		fi
+#
+#		process_patch_file "${SRC}/patch/misc/wireless-uwe5622/wireless-uwe5622-Fix-compilation-with-6.7-kernel.patch" "applying"
+#		process_patch_file "${SRC}/patch/misc/wireless-uwe5622/wireless-uwe5622-reduce-system-load.patch" "applying"
+#
+#		if linux-version compare "${version}" ge 6.9; then
+#			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.9.patch" "applying"
+#		fi
+#
+#		if linux-version compare "${version}" ge 6.11; then
+#			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.11.patch" "applying"
+#		fi
+#
+#		# Fix "spanning-writes" warning in dmesg, applicable when kernel is compiled with FORTIFY_SOURCE
+#		if linux-version compare "${version}" ge 6.12; then
+#			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-fix-spanning-writes.patch" "applying"
+#		fi
+#
+#		if linux-version compare "${version}" ge 6.15; then
+#			if [[ "$LINUXFAMILY" == sunxi* ]]; then
+#				process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-fix-timer-api-changes-for-6.15-only-sunxi.patch" "applying"
+#			else
+#				process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.15-timer-api-changes.patch" "applying"
+#			fi
+#		fi
+#
+#		if linux-version compare "${version}" ge 6.16; then
+#			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.16.patch" "applying"
+#		fi
+#
+#		if linux-version compare "${version}" ge 6.17; then
+#                       process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.17.patch" "applying"
+#              fi
+#
+#	fi
+#}
 
-	# Wireless drivers for Unisoc uwe5622 wireless
-
-	if linux-version compare "${version}" ge 5.15 && [[ "$LINUXFAMILY" == sunxi* || "$LINUXFAMILY" == rockchip64 || "$LINUXFAMILY" == rk35xx ]]; then
-
-		display_alert "Adding" "Drivers for Unisoc uwe5622 found on some Allwinner and Rockchip boards" "info"
-
-		if linux-version compare "${version}" ge 6.3; then
-			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-allwinner-v6.3.patch" "applying"
-			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-allwinner-bugfix-v6.3.patch" "applying"
-			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-allwinner-v6.3-compilation-fix.patch" "applying"
-		else
-			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-allwinner.patch" "applying"
-			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-allwinner-bugfix.patch" "applying"
-		fi
-
-		if linux-version compare "${version}" ge 6.4; then
-			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.4-post.patch" "applying"
-		fi
-
-		process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-warnings.patch" "applying"
-
-		# Add to section Makefile
-		echo "obj-\$(CONFIG_SPARD_WLAN_SUPPORT) += uwe5622/" >> "$kerneldir/drivers/net/wireless/Makefile"
-
-		# Don't add this to legacy (<5.0) kernels.
-		if linux-version compare "${version}" ge 5.0 && linux-version compare "${version}" lt 6.1; then
-			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-park-link-pre-v6.1.patch" "applying"
-		fi
-
-		if linux-version compare "${version}" ge 6.1; then
-			if linux-version compare "${version}" ge 6.2 && linux-version compare "${version}" lt 6.3; then # only for 6.2.y
-				process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-park-link-v6.2-only.patch" "applying"
-			else # assume 6.1.y y > 30
-				process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-park-link-v6.1-post.patch" "applying"
-			fi
-			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.1.patch" "applying"
-		fi
-
-		if linux-version compare "${version}" ge 6.6; then
-			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.6-fix-tty-sdio.patch" "applying"
-		fi
-
-		if [[ "$LINUXFAMILY" == sunxi* ]]; then
-			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-fix-setting-mac-address-for-netdev.patch" "applying"
-		fi
-
-		# Apply patches that adjust the driver only for rockchip platforms
-		if [[ "$LINUXFAMILY" == rockchip* || "$LINUXFAMILY" == "rk35xx" ]]; then
-			if linux-version compare "${version}" le 6.1; then
-				process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-adjust-for-rockchip-pre-6.1.patch"
-			else
-				process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-adjust-for-rockchip-post-6.1.patch"
-			fi
-		fi
-
-		process_patch_file "${SRC}/patch/misc/wireless-uwe5622/wireless-uwe5622-Fix-compilation-with-6.7-kernel.patch" "applying"
-		process_patch_file "${SRC}/patch/misc/wireless-uwe5622/wireless-uwe5622-reduce-system-load.patch" "applying"
-
-		if linux-version compare "${version}" ge 6.9; then
-			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.9.patch" "applying"
-		fi
-
-		if linux-version compare "${version}" ge 6.11; then
-			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.11.patch" "applying"
-		fi
-
-		# Fix "spanning-writes" warning in dmesg, applicable when kernel is compiled with FORTIFY_SOURCE
-		if linux-version compare "${version}" ge 6.12; then
-			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-fix-spanning-writes.patch" "applying"
-		fi
-
-		if linux-version compare "${version}" ge 6.15; then
-			if [[ "$LINUXFAMILY" == sunxi* ]]; then
-				process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-fix-timer-api-changes-for-6.15-only-sunxi.patch" "applying"
-			else
-				process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.15-timer-api-changes.patch" "applying"
-			fi
-		fi
-
-		if linux-version compare "${version}" ge 6.16; then
-			process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.16.patch" "applying"
-		fi
-
-		if linux-version compare "${version}" ge 6.17; then
-                        process_patch_file "${SRC}/patch/misc/wireless-uwe5622/uwe5622-v6.17.patch" "applying"
-                fi
-
-	fi
-}
 
 driver_rtl8723cs() {
 
