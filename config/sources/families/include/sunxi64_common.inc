@@ -38,7 +38,7 @@ case $BRANCH in
 
 	edge)
 		declare -g KERNEL_MAJOR_MINOR="6.17" # Major and minor versions of this kernel.
-		declare -g KERNELBRANCH="tag:v6.17.1"
+		declare -g KERNELBRANCH="tag:v6.17.2"
 		KERNELPATCHDIR="archive/warpme-${KERNEL_MAJOR_MINOR}"
 		;;
 esac
