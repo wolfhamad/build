@@ -1,0 +1,2 @@
+- name: Rebuild Armbian
+  uses: armbian/build@v25.11.0-trunk.351
