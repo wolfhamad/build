@@ -354,7 +354,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: wolfhamad/build@v25.5.1
+      - uses: wolfhamad/build
         with:
           armbian_token:              "${{secrets.GITHUB_TOKEN}}"
           armbian_target:             "${{inputs.armbian_target}}"
