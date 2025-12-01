@@ -1,0 +1,89 @@
+name: Build Armbian and Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags like v1.0.0
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  build-armbian:
+    runs-on: ubuntu-latest
+    timeout-minutes: 80  # Build can take a while
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install build dependencies
+      run: |
+        sudo ./compile.sh requirements
+
+    - name: Build Armbian
+      run: |
+        sudo mkdir -p /home/runner/work/build/build/.tmp/ && sudo mkdir -p /home/runner/work/build/build/.tmp/logs-5e46f0f6-1410-4a4c-981f-d62f2f07b5c5 && sudo chmod 777 /home/runner/work/build/ -R && sudo chmod 777 /home/runner/work/build/build -R  && ./compile.sh \
+          BOARD=transpeed \
+          BRANCH=current \
+          RELEASE=trixie \
+          BUILD_MINIMAL=yes \
+          BUILD_DESKTOP=yes \
+          EXTRAWIFI=no \
+          KERNEL_BTF=no \
+          KERNEL_CONFIGURE=no \
+          REVISION=25.8.3 \
+          COMPRESS_OUTPUTIMAGE=sha,img,xz \
+          ARMBIAN_BUILD_UUID=5e46f0f6-1410-4a4c-981f-d62f2f07b5c5
+
+    - name: Prepare artifacts for release
+      run: |
+        # Create artifacts directory
+        mkdir -p armbian-artifacts
+        
+        # Copy .deb packages
+        if [ -d "output/debs" ]; then
+          cp output/debs/*.deb armbian-artifacts/ || true
+        fi
+        
+        # Copy images
+        if [ -d "output/images" ]; then
+          cp output/images/* armbian-artifacts/ || true
+        fi
+        
+        # Copy any other important build artifacts
+        if [ -d "output" ]; then
+          find output/ -name "*.img" -o -name "*.xz" -o -name "*.sha" | head -10 | xargs -I {} cp {} armbian-artifacts/ || true
+        fi
+        
+        # List what we collected
+        echo "Artifacts collected:"
+        ls -la armbian-artifacts/
+
+    - name: Upload artifacts to release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          armbian-artifacts/*.deb
+          armbian-artifacts/*.img
+          armbian-artifacts/*.xz
+          armbian-artifacts/*.sha
+        body: |
+          Armbian build for Tanix TX6S (AXP313)
+          
+          Build Date: ${{ github.event.head_commit.timestamp }}
+          Triggered by: ${{ github.actor }}
+          
+          ### Included Artifacts:
+          - Armbian OS Image (.img/.xz)
+          - Kernel packages (.deb)
+          - Hardware support packages (.deb)
+
+    - name: Upload build artifacts (non-release)
+      uses: actions/upload-artifact@v4
+      if: always() && !startsWith(github.ref, 'refs/tags/')
+      with:
+        name: armbian-build-output
+        path: |
+          armbian-artifacts/
+          output/
+        retention-days: 7
