@@ -30,6 +30,10 @@ jobs:
           KERNEL_BTF=no \
           DESKTOP_ENVIRONMENT_CONFIG_NAME=config_base \
           DESKTOP_ENVIRONMENT=xfce \
+          REMOTE_DESKTOP=off \
+          BROWSERS=off \
+          DESKTOP_TOOLS=off \
+          MULTIMEDIA=off \
           BUILD_DESKTOP=yes \
           KERNEL_CONFIGURE=no \
           REVISION=25.8.3 \
