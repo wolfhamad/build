@@ -9,7 +9,7 @@ on:
 jobs:
   build-armbian:
     runs-on: ubuntu-latest
-    timeout-minutes: 80  # Build can take a while
+    timeout-minutes: 130  # Build can take a while
 
     steps:
     - name: Checkout repository
