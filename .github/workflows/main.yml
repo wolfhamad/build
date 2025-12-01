@@ -23,7 +23,7 @@ jobs:
       run: |
         sudo mkdir -p /home/runner/work/build/build/.tmp/ && sudo mkdir -p /home/runner/work/build/build/.tmp/logs-5e46f0f6-1410-4a4c-981f-d62f2f07b5c5 && sudo chmod 777 /home/runner/work/build/ -R && sudo chmod 777 /home/runner/work/build/build -R  && ./compile.sh \
           BOARD=transpeed-8k618-t \
-          BRANCH=current \
+          BRANCH=edge \
           RELEASE=noble \
           BUILD_MINIMAL=no \
           EXTRAWIFI=no \
