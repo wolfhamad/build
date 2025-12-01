@@ -28,7 +28,7 @@ jobs:
           BUILD_MINIMAL=no \
           EXTRAWIFI=no \
           KERNEL_BTF=no \
-          DESKTOP_ENVIRONMENT=xfce4 \
+          DESKTOP_ENVIRONMENT=xfce \
           BUILD_DESKTOP=yes \
           KERNEL_CONFIGURE=no \
           REVISION=25.8.3 \
