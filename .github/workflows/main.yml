@@ -33,7 +33,7 @@ jobs:
           DESKTOP_ENVIRONMENT=xfce \
           BUILD_DESKTOP=yes \
           KERNEL_CONFIGURE=no \
-          REVISION=25.8.3 \
+          REVISION=24.05 \
           COMPRESS_OUTPUTIMAGE=sha,img,xz \
           ARMBIAN_BUILD_UUID=5e46f0f6-1410-4a4c-981f-d62f2f07b5c5
 
