@@ -1,0 +1,48 @@
+From: wolfhamad <wolfhamad@users.noreply.github.com>
+Date: Sat, 08 Aug 2026 00:00:00 +0000
+Subject: [PATCH] Make fillModeNonSolid optional in device capabilities and profiles
+
+Make fillModeNonSolid optional so DXVK will not reject devices that don't
+advertise this feature. This relaxes the hard requirement in the device
+feature table and in the VP_DXVK_requirements.json profiles.
+
+---
+ src/dxvk/dxvk_device_info.cpp   | 2 +-
+ VP_DXVK_requirements.json       | 4 +++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/dxvk/dxvk_device_info.cpp b/src/dxvk/dxvk_device_info.cpp
+--- a/src/dxvk/dxvk_device_info.cpp
++++ b/src/dxvk/dxvk_device_info.cpp
+@@ -770,7 +770,7 @@ std::vector<DxvkDeviceCapabilities::FeatureEntry> DxvkDeviceCapabilities::getF
+       ENABLE_FEATURE(core.features, drawIndirectFirstInstance, false),
+       ENABLE_FEATURE(core.features, dualSrcBlend, true),
+-      ENABLE_FEATURE(core.features, fillModeNonSolid, true),
++      ENABLE_FEATURE(core.features, fillModeNonSolid, false),
+       ENABLE_FEATURE(core.features, fragmentStoresAndAtomics, true),
+       ENABLE_FEATURE(core.features, fullDrawIndexUint32, true),
+       ENABLE_FEATURE(core.features, geometryShader, true),
+diff --git a/VP_DXVK_requirements.json b/VP_DXVK_requirements.json
+--- a/VP_DXVK_requirements.json
++++ b/VP_DXVK_requirements.json
+@@ -203,7 +203,7 @@
+                     "geometryShader": true,
+                     "imageCubeArray": true,
+                     "depthClamp": true,
+-                    "depthBiasClamp": true,
+-                    "fillModeNonSolid": true,
++                    "depthBiasClamp": true,
++                    "fillModeNonSolid": false,
+                     "sampleRateShading": true,
+                     "shaderClipDistance": true,
+                     "shaderCullDistance": true,
+@@ -241,7 +241,7 @@
+                     "depthBiasClamp": true,
+                     "depthClamp": true,
+-                    "dualSrcBlend": true,
+-                    "fillModeNonSolid": true,
++                    "dualSrcBlend": true,
++                    "fillModeNonSolid": false,
+                     "fullDrawIndexUint32": true,
+                     "geometryShader": true,
+                     "imageCubeArray": true,
